@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
+
+
+    <context:component-scan base-package="com.cshuig" >
+        <!-- 将Controller的注解排除掉 ,由于spring-mvc已经扫描过 -->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+<!-- 引入src目录下的：properties文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+
+<!-- 配置数据源 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" init-method="createDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+
+        <!-- pool配置  -->
+		<!-- 配置连接池 , 初始化时获取的连接数 -->
+		<property name="initialSize" value="${pool.initialSize}" />
+		<!-- 最大连接数 -->
+		<property name="maxActive" value="${pool.maxActive}" />
+		<!-- 最大空闲连接数 已经做好的连接，可以直接拿过来用 -->
+		<property name="maxIdle" value="${pool.maxIdle}" />
+		<!-- 最小空闲连接数 保证有一定数量的连接 -->
+		<property name="minIdle" value="${pool.maxIdle}" />
+		<!-- 最大连接时间，如果超过这个时间，就宣布连接超时 单位：毫秒(1s=1000ms) -->
+		<property name="maxWait" value="${pool.maxWait}" />
+        <property name="defaultAutoCommit" value="${pool.defaultAutoCommit}" />
+	</bean>
+
+<!-- 配置Spring事务 -->
+<!-- 创建事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+<!-- 启动 Spring的注解事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager" order="200"/>
+
+<!-- 配置 MyBatis：SqlSessionFactoryBean -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+        <!-- mapper和resultmap配置路径 -->
+        <property name="mapperLocations">
+            <list>
+                <!-- 表示在com.yeepay.mapper包或以下所有目录中，以.xml结尾所有文件 -->
+                <value> classpath:com/cshuig/scm/mapper/*.xml</value >
+            </list>
+        </property>
+    </bean>
+    <!--  这样我们就可以通过Spring的依赖注入在Dao中直接使用SqlSessionTemplate来编程了 -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+    <!-- 自动去搜索mapper中的对象，并自动注入：MapperFactoryBean -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.cshuig.scm.mapper" />
+        <property name="markerInterface" value="com.cshuig.framework.common.SqlMapper"/>
+    </bean>
+
+<!-- 配置：hibernate4:sessionFactory -->
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.use_sql_comments">${hibernate.use_sql_comments}</prop>
+                <!-- 将事务设置为自动提交才能将数据插入到数据库中 -->
+                <prop key="hibernate.connection.autocommit">${hibernate.connection.autocommit}</prop>
+            </props>
+        </property>
+        <property name="packagesToScan">
+            <list>
+                <value>com.cshuig.scm.entity</value>
+            </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- 让所有的方法都加入事务管理，为了提高效率，可以把一些查询之类的方法设置为只读的事务 -->
+            <tx:method name="*" propagation="REQUIRED" read-only="true" />
+            <!-- 以下方法都是可能涉及修改的方法，就无法设置为只读 -->
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="del*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" />
+            <tx:method name="save*" propagation="REQUIRED" />
+        </tx:attributes>
+	</tx:advice>
+    <aop:config>
+        <!-- 设置pointcut：表示哪些方法要加入事务管理 -->
+        <!-- 以下的事务是声明在Dao中，但是通常都会在Service来处理多个业务对象逻辑的关系 注入删除，更新等，就会导致数据不完整，所以事务不应该在Dao层处理，而应该在Service -->
+        <aop:pointcut id="allMethods" expression="execution(* com.cshuig.scm.service.*.*(..))" />
+        <!-- 通过advisor来确定具体要加入事务控制的方法 -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="allMethods" />
+    </aop:config>
+
+
+	<bean id="jdbcExceptionTranslator"
+		class="org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator">
+		<description>
+			The bean that translates exceptions thrown by JDBC into
+			Spring exceptions.
+		</description>
+	</bean>
+
+</beans>
