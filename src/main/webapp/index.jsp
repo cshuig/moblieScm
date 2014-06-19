@@ -52,7 +52,7 @@
             height: 262px;
         }
         .login {
-            width: 470px;
+            width: 480px;
             float: left;
             margin-left: 40px;
             margin-top: 33px;
@@ -82,7 +82,7 @@
             background: url("resources/images/login/username-field.png") center left no-repeat;
         }
         .password-field {
-            width: 280px;
+            width: 290px;
             height: 38px;
             float:left;
             margin-top: 10px;
@@ -99,7 +99,7 @@
 
         input[type="text"], input[type="password"] {
             width: 120px;
-            height: 16px;
+            height: 18px;
             margin-top: 10px;
             margin-left: 10px;
             font-family: Verdana, Arial;
@@ -107,7 +107,7 @@
             color: #2d2d2d;
         }
 
-        input[type="checkbox"] {
+        input[type="checkbox"]{
             position: absolute;
             left: -999px;
         }
@@ -141,7 +141,7 @@
             height: 73px;
             float: left;
             margin-top: 12px;
-            margin-left: 2px;
+            margin-left: 220px;
             font-family: Verdana, Arial;
             font-size: 26px;
             color: #ffffff;
@@ -188,8 +188,8 @@
             <div class="password-field">
                 <input type="password" name="password" value="123"/>
             </div>
-            <input type="checkbox" name="remember-me" />
-            <label>记住我</label>
+            <input type="checkbox" name="remember-me" id="remember-me"/>
+            <label for="remember-me">记住我</label>
             <input type="submit" name="submit" value="GO" />
         </form>
     </div>

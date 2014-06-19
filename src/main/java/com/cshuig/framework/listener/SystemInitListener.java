@@ -12,6 +12,7 @@ public class SystemInitListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         servletContextEvent.getServletContext().setAttribute("systemName",servletContextEvent.getServletContext().getInitParameter("systemName"));
+        servletContextEvent.getServletContext().setAttribute("contextPath",servletContextEvent.getServletContext().getContextPath());
     }
 
     @Override

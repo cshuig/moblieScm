@@ -12,5 +12,7 @@
 </head>
 <body>
     欢迎进入首页。。。
+    <br>
+    ${contextPath}
 </body>
 </html>
