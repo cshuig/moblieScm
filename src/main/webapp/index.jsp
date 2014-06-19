@@ -175,10 +175,11 @@
             color: #2d2d2d;
         }
     </style>
+    <script type="text/javascript" src="resources/js/jquery/jquery-1.11.1.min.js"></script>
 </head>
 <body>
     <div class="contains">
-        <form action="user/index">
+        <form action="login/u" method="post">
             <div class="login">LOGIN</div>
             <div class="userName-text">用户名:</div>
             <div class="password-text">密 码:</div>
@@ -197,4 +198,7 @@
         2014-6-19臭水沟著作 >>> <a href="http://www.baidu.com/" target="_blank" title="百度">百度首页</a>
     </div>
 </body>
+<script type="text/javascript">
+
+</script>
 </html>
