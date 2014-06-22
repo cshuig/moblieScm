@@ -25,12 +25,6 @@
     		<property name="suffix" value=".jsp"></property>
     	</bean>
     	
-  <!-- dwr转换器。配置了下面dwr的 annotation，这个就没用了
-  	<dwr:configuration>
-  	 <dwr:convert type="bean" class="" />
- 	</dwr:configuration>
-   -->
-	     
     	<!-- 全局异常处理 -->
     <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
         <!-- to /commons/error.jsp -->  

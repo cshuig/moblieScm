@@ -5,7 +5,8 @@
   Time: 22:43
   To change this template use File | Settings | File Templates.
 --%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -136,7 +137,7 @@
             background: url("resources/images/login/checkbox-off-hover.png") top left no-repeat;
         }
 
-        input[type="submit"]{
+        input[type="button"]{
             width: 95px;
             height: 73px;
             float: left;
@@ -148,7 +149,7 @@
             cursor: pointer;
         }
 
-        input[type="submit"]:hover, input[type="submit"]:focus {
+        input[type="button"]:hover, input[type="button"]:focus {
             background:url("resources/images/login/go-hover.png")
         }
 
@@ -176,22 +177,23 @@
         }
     </style>
     <script type="text/javascript" src="resources/js/jquery/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="resources/js/utils/CommonUtils.js"></script>
 </head>
 <body>
     <div class="contains">
-        <form action="login/u" method="post">
+        <form id="loginForm" action="login/" method="post">
             <div class="login">LOGIN</div>
             <div class="userName-text">用户名:</div>
             <div class="password-text">密 码:</div>
             <div class="userName-field">
-                <input type="text" name="userName" value="admin"/>
+                <input type="text" id="userName" name="userName" value="admin"/>
             </div>
             <div class="password-field">
-                <input type="password" name="password" value="123"/>
+                <input type="password" id="password" name="password" value="123"/>
             </div>
             <input type="checkbox" name="remember-me" id="remember-me"/>
-            <label for="remember-me">记住我</label>
-            <input type="submit" name="submit" value="GO" />
+            <label id="label-remember-me" for="remember-me">记住我</label>
+            <input type="button" name="button" value="GO" />
         </form>
     </div>
     <div id="footer">
@@ -199,6 +201,11 @@
     </div>
 </body>
 <script type="text/javascript">
-
+    $(function(){
+        $("input[type='button']").on('click',function(event){
+            $("form:first").attr('action','login/'+$("#userName").val()).submit();
+            //alert($.param(converFormToObj($("#loginForm")).userName));
+        });
+    });
 </script>
 </html>

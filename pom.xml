@@ -159,7 +159,7 @@
                     </webApp>
                     <connectors>
                         <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>10086</port>
+                            <port>9090</port>
                             <maxIdleTime>60000</maxIdleTime>
                         </connector>
                     </connectors>
