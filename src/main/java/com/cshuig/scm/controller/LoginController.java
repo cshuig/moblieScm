@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.inject.Inject;
 import javax.security.auth.login.LoginException;
@@ -30,6 +29,12 @@ public class LoginController {
         } catch (LoginException e) {
             e.printStackTrace();
         }
-        return "index";
+        return "welcome";
+    }
+
+    @RequestMapping(value="/inMian")
+    public String inMain(){
+        System.out.println("加载mian页面");
+        return "mian";
     }
 }

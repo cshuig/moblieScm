@@ -1,7 +1,6 @@
 package com.cshuig.scm.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -13,6 +12,6 @@ public class UserController {
 
     @RequestMapping(value = "/index")
     public String init(){
-        return "index";
+        return "welcome";
     }
 }
