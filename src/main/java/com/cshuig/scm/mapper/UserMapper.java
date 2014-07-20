@@ -1,6 +1,7 @@
 package com.cshuig.scm.mapper;
 
 import com.cshuig.framework.common.SqlMapper;
+import com.cshuig.scm.exception.DaoException;
 
 /**
  * 

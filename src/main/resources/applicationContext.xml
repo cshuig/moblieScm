@@ -56,12 +56,12 @@
         <property name="mapperLocations">
             <list>
                 <!-- 表示在com.yeepay.mapper包或以下所有目录中，以.xml结尾所有文件 -->
-                <value> classpath:com/cshuig/scm/mapper/*.xml</value >
+                <value> classpath:com/cshuig/scm/mapper/xml/*.xml</value >
             </list>
         </property>
     </bean>
     <!--  这样我们就可以通过Spring的依赖注入在Dao中直接使用SqlSessionTemplate来编程了 -->
-    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg index="0" ref="sqlSessionFactory" />
     </bean>
     <!-- 自动去搜索mapper中的对象，并自动注入：MapperFactoryBean -->
