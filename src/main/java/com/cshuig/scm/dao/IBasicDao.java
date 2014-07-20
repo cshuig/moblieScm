@@ -18,33 +18,34 @@ import java.util.Map;
 public interface IBasicDao<T> {
 
 	/**
-	 * 添加一个实体对象
+	 * 使用hibernate：添加一个实体对象
 	 * @param t
 	 * @return
 	 */
 	public T addObject(T t) throws DaoException;
 	
 	/**
-	 * 删除一个实体对象，实际开发中,物理删除很少使用,一般都是使用update将对象置为无效
+	 * 使用hibernate：删除一个实体对象，实际开发中,物理删除很少使用,一般都是使用update将对象置为无效
 	 * @param id
 	 */
 	public void deleteObject(int id) throws DaoException;
 	
 	/**
-	 * 修改一个实体对象
+	 * 使用hibernate：修改一个实体对象
 	 * @param t
 	 * @return
 	 */
 	public T updateObject(T t) throws DaoException;
 	
 	/**
-	 * 通过ID,得到一个实体对象
+	 * 使用hibernate：通过ID,得到一个实体对象
 	 * @param id
 	 * @return
 	 */
 	public T getObjectById(int id) throws DaoException;
 
     /**
+     * 使用hibernate：
      * 使用HQL,进行不分页查询
      * @param hql
      * @param arguments		数组：多个非别名参数(hql带 '?')
@@ -54,6 +55,7 @@ public interface IBasicDao<T> {
     public List<T> listByHql(String hql, Object[] arguments, Map<String, Object> aliases) throws DaoException;
 
     /**
+     * 使用hibernate：
      * 使用HQL,进行分页查询
      * @param hql
      * @param arguments	数组：多个非别名参数(hql带 '?')
@@ -63,6 +65,7 @@ public interface IBasicDao<T> {
     public Pager<T> pagerListByHql(String hql, Object[] arguments, Map<String, Object> aliases) throws DaoException;
 
     /**
+     * 使用hibernate：
      * 使用HQL，获取一个对象
      * @param hql
      * @param arguments	数组：多个非别名参数(hql带 '?')
@@ -72,6 +75,7 @@ public interface IBasicDao<T> {
     public Object queryObjectByHql(String hql, Object[] arguments, Map<String, Object> aliases) throws DaoException;
 
     /**
+     * 使用hibernate：
      * 使用HQL，更新一个对象
      * @param hql
      * @param arguments	数组：多个非别名参数(hql带 '?')
@@ -81,6 +85,7 @@ public interface IBasicDao<T> {
     public void updateObjectByHql(String hql, Object[] arguments, Map<String, Object> aliases) throws DaoException;
 
     /**
+     * 使用hibernate：
      * 使用原生SQL语句,进行不分页查询
      * 使用原生的SQL语句查询
      * 泛型限制使用方法：
@@ -97,6 +102,7 @@ public interface IBasicDao<T> {
     public <T> List<T> listBySql(String sql, Object[] arguments, Map<String, Object> aliases, Class<T> clz, boolean hasEntity) throws DaoException;
 
     /**
+     * 使用hibernate：
      * 使用原生SQL语句，进行分页查询
      * @param sql
      * @param arguments	数组：多个非别名参数(hql带 '?')
@@ -106,4 +112,5 @@ public interface IBasicDao<T> {
      * @return
      */
     public <T> Pager<T> pagerListBySql(String sql, Object[] arguments, Map<String, Object> aliases, Class<T> clz, boolean hasEntity) throws DaoException;
+
 }
