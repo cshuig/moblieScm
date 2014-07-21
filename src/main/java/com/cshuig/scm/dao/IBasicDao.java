@@ -113,4 +113,44 @@ public interface IBasicDao<T> {
      */
     public <T> Pager<T> pagerListBySql(String sql, Object[] arguments, Map<String, Object> aliases, Class<T> clz, boolean hasEntity) throws DaoException;
 
+    /**
+     * 使用mybatis：添加一个实体对象
+     * @param t
+     * @return
+     */
+    public T addObject(String statementId, T t) throws DaoException;
+
+    /**
+     * 使用mybatis：删除一个实体对象，实际开发中,物理删除很少使用,一般都是使用update将对象置为无效
+     * @param id
+     */
+    public void deleteObject(String statementId, int id) throws DaoException;
+
+    /**
+     * 使用mybatis：修改一个实体对象
+     * @param statementId mapper中的namespace.id
+     * @param t
+     * @return
+     */
+    public T updateObject(String statementId, T t) throws DaoException;
+
+    /**
+     * 使用mybatis：通过ID,得到一个实体对象
+     * @param statementId mapper中的namespace.id
+     * @param id
+     * @return
+     */
+    public T getObjectById(String statementId, int id) throws DaoException;
+
+    /**
+     * 使用mybatis：通过map参数,得到一个实体对象
+     * @param statementId mapper中的namespace.id
+     * @param params
+     * @return
+     * @throws DaoException
+     */
+    public T queryObjectByMap(String statementId, Map params) throws DaoException;
+
+
+
 }

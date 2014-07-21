@@ -28,7 +28,7 @@ import java.util.*;
  *  创建者：Administrator
  *  创建时间:2014年3月15日 下午9:08:50
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "CdiManagedBeanInconsistencyInspection"})
 @Repository
 public class BasicDao<T> implements IBasicDao<T> {
 
@@ -54,7 +54,11 @@ public class BasicDao<T> implements IBasicDao<T> {
      * */
     private SqlSession sqlSession;
 
-	@Inject
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    @Inject
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
@@ -123,6 +127,7 @@ public class BasicDao<T> implements IBasicDao<T> {
 	 * @param aliases		数组：多个别名参数(hql带':aliases')
 	 * @return
 	 */
+    @Override
 	public List<T> listByHql(String hql, Object[] arguments, Map<String, Object> aliases)  throws DaoException{
 		//设置排序
 		hql = this.setOrder(hql);
@@ -138,6 +143,7 @@ public class BasicDao<T> implements IBasicDao<T> {
 	 * @param aliases	数组：多个别名参数(hql带':aliases')
 	 * @return
 	 */
+    @Override
 	public Pager<T> pagerListByHql(String hql, Object[] arguments, Map<String, Object> aliases)  throws DaoException{
 		hql = this.setOrder(hql);
 		Query queryForList = this.getSession().createQuery(hql);
@@ -169,6 +175,7 @@ public class BasicDao<T> implements IBasicDao<T> {
 	 * @param aliases	数组：多个别名参数(hql带':aliases')
 	 * @return
 	 */
+    @Override
 	public Object queryObjectByHql(String hql, Object[] arguments, Map<String, Object> aliases)  throws DaoException{
 		Query query = this.getSession().createQuery(hql);
 		this.setParameters(query, arguments, aliases);
@@ -182,6 +189,7 @@ public class BasicDao<T> implements IBasicDao<T> {
 	 * @param aliases	数组：多个别名参数(hql带':aliases')
 	 * @return
 	 */
+    @Override
 	public void updateObjectByHql(String hql, Object[] arguments, Map<String, Object> aliases)  throws DaoException{
 		Query query = this.getSession().createQuery(hql);
 		this.setParameters(query, arguments, aliases);
@@ -202,6 +210,7 @@ public class BasicDao<T> implements IBasicDao<T> {
 	 * @param hasEntity	是否hibernate所管理的实体
 	 * @return
 	 */
+    @Override
 	public <T> List<T> listBySql(String sql, Object[] arguments, Map<String, Object> aliases, Class<T> clz, boolean hasEntity)  throws DaoException{
 		
 		SQLQuery sqlQuery = this.getSession().createSQLQuery(sql);
@@ -224,6 +233,7 @@ public class BasicDao<T> implements IBasicDao<T> {
 	 * @param hasEntity	是否hibernate所管理的实体
 	 * @return
 	 */
+    @Override
 	public <T> Pager<T> pagerListBySql(String sql, Object[] arguments,
 			Map<String, Object> aliases, Class<T> clz, boolean hasEntity)  throws DaoException{
 		
@@ -253,7 +263,7 @@ public class BasicDao<T> implements IBasicDao<T> {
 		return pagers;
 	}
 
-	/**
+    /**
 	 * 获取当前的泛型对象T：具体事例对象
 	 */
 	private Class<T> clz;
@@ -282,7 +292,7 @@ public class BasicDao<T> implements IBasicDao<T> {
 	/**
 	 * 为HQL查询语句添加排序信息
 	 * @param hql
-	 * @return
+	 * @return hql
 	 */
 	public String setOrder(String hql) throws DaoException{
 		String orderField = SystemContext.getOrderField();//排序的字段
@@ -329,6 +339,67 @@ public class BasicDao<T> implements IBasicDao<T> {
 
 
     /** Mybatis的Dao方法实现-----------------------------------------------------------------------------------------------*/
+
+
+    /**
+     * 使用mybatis：添加一个实体对象
+     *
+     * @param statementId
+     * @param t
+     * @return
+     */
+    @Override
+    public T addObject(String statementId, T t) throws DaoException {
+        this.sqlSession.insert(statementId,t);
+        return t;
+    }
+
+    /**
+     * 使用mybatis：删除一个实体对象，实际开发中,物理删除很少使用,一般都是使用update将对象置为无效
+     *
+     * @param statementId
+     * @param id
+     */
+    @Override
+    public void deleteObject(String statementId, int id) throws DaoException {
+        this.sqlSession.delete(statementId,id);
+    }
+
+    /**
+     * 使用mybatis：修改一个实体对象
+     *
+     * @param statementId mapper中的namespace.id
+     * @param t
+     * @return
+     */
+    @Override
+    public T updateObject(String statementId, T t) throws DaoException {
+        this.sqlSession.update(statementId,t);
+        return t;
+    }
+
+    /**
+     * 使用mybatis：通过ID,得到一个实体对象
+     * @param statementId mapper中的namespace.id
+     * @param id
+     * @return
+     */
+    @Override
+    public T getObjectById(String statementId, int id) throws DaoException {
+        return this.sqlSession.selectOne(statementId,id);
+    }
+
+    /**
+     * 使用mybatis：通过map参数,得到一个实体对象
+     * @param statementId mapper中的namespace.id
+     * @param params
+     * @return
+     * @throws com.cshuig.scm.exception.DaoException
+     */
+    @Override
+    public T queryObjectByMap(String statementId, Map params) throws DaoException {
+        return this.sqlSession.selectOne(statementId,params);
+    }
 
     /**
      * 动态切换不同数据库的：分页方法如：mysql使用limit，oracle使用：rownum

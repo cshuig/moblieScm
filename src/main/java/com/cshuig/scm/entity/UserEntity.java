@@ -1,8 +1,7 @@
 package com.cshuig.scm.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,6 +23,7 @@ public class UserEntity implements Serializable{
     private Integer status;
     private List<RoleEntity> rolesList;
 
+    @Id
     @Column(name = "id", length = 32)
     public int getId() {
         return id;
@@ -87,19 +87,22 @@ public class UserEntity implements Serializable{
         this.lastLoginTime = lastLoginTime;
     }
 
+    @Column(name = "status", length = 1)
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    @Transient
+    @ElementCollection(targetClass=RoleEntity.class)
     public List<RoleEntity> getRolesList() {
         return rolesList;
     }
 
     public void setRolesList(List<RoleEntity> rolesList) {
         this.rolesList = rolesList;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-    @Column(name = "status", length = 1)
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 }

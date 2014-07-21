@@ -2,6 +2,7 @@ package com.cshuig.scm.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -18,6 +19,7 @@ public class RoleEntity implements Serializable{
     private Integer status;
     private String remark;
 
+    @Id
     @Column(name = "id", length = 32)
     public int getId() {
         return id;

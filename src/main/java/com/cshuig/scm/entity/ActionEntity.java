@@ -1,8 +1,6 @@
 package com.cshuig.scm.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -24,6 +22,8 @@ public class ActionEntity implements Serializable{
     private int menuId;
     private String remark;
 
+    @Id
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id",length = 32)
     public int getId() {
         return id;

@@ -1,6 +1,8 @@
 package com.cshuig.scm.entity;
 
 import javax.persistence.*;
+import javax.persistence.Transient;
+import java.beans.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -32,6 +34,7 @@ public class MenuEctity implements Serializable{
 
     List<MenuEctity> subMenuList;
 
+    @Id
     @Column(name = "id", length = 32)
     public int getId() {
         return id;
@@ -125,6 +128,7 @@ public class MenuEctity implements Serializable{
         this.remark = remark;
     }
 
+    @Transient
     public List<MenuEctity> getSubMenuList() {
         return subMenuList;
     }
