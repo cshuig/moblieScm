@@ -33,14 +33,14 @@ import java.util.*;
 public class BasicDao<T> implements IBasicDao<T> {
 
     /**
-     * 1&#x3001;spring3&#x4e2d;&#x6ca1;&#x6709;&#x4e3a;hibernate4&#x63d0;&#x4f9b;&#xff1a;HibernateDaoSupport&#x7c7b;&#xff0c;&#x4f46;&#x662f;&#x4ece;spring4&#x5f00;&#x59cb;&#x5c31;&#x6709;&#x63d0;&#x4f9b;
-     * 2&#x3001;&#x5728;spring4&#x4e2d;&#x6ca1;&#x6709;&#x4e3a;Hibernate4&#x63d0;&#x4f9b;&#xff1a;AnnotationSessionFactoryBean &#x8fd9;&#x4e2a;&#x7c7b;(&#x53ea;&#x6709;hibernate3&#x624d;&#x6709;,&#x5982;&#x4e0b;)
+     * 1、spring3中没有为hibernate4提供：HibernateDaoSupport类，但是从spring4开始就有提供
+     * 2、在spring4中没有为Hibernate4提供：AnnotationSessionFactoryBean 这个类(只有hibernate3才有,如下)
      * 			org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean
      *
      *
-     * 3&#x3001;&#x7531;&#x4e8e;&#x4f7f;&#x7528;&#x4e86;maven&#x8fdb;&#x884c;&#x6a21;&#x5757;&#x5f00;&#x53d1;&#xff0c;&#x6240;&#x4ee5;&#x5bf9;&#x4e8e;&#x6b64;&#x6a21;&#x5757;(basic-hibernate)&#x6765;&#x8bf4;,&#x6700;&#x597d;&#x4e0d;&#x548c;&#x5176;&#x4ed6;&#x6846;&#x67b6;(&#x5982;&#xff1a;spring)&#x4ea7;&#x751f;&#x4f9d;&#x8d56;(&#x89e3;&#x8026;&#x5408;),
-     * 	 &#x6240;&#x4ee5;&#x4e0d;&#x7ee7;&#x627f;spring&#x63d0;&#x4f9b;&#x7684;hibernate&#x652f;&#x6301;(&#x5373;&#xff1a;extends HibernateDaoSupport)&#xff0c;
-     * 	         &#x800c;&#x4f7f;&#x7528;hibernate&#x81ea;&#x5df1;&#x7684;&#xff1a;SessionFactory
+     * 3、由于使用了maven进行模块开发，所以对于此模块(basic-hibernate)来说,最好不和其他框架(如：spring)产生依赖(解耦合),
+     * 	 所以不继承spring提供的hibernate支持(即：extends HibernateDaoSupport)，
+     * 	         而使用hibernate自己的：SessionFactory
      */
 	
 	/** Hibernate的*/
