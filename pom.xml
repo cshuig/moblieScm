@@ -21,6 +21,9 @@
       <mybatis-version>3.2.7</mybatis-version>
       <mybatis-spring-version>1.2.2</mybatis-spring-version>
       <aspectjweaver-version>1.7.4</aspectjweaver-version>
+
+      <maven-resources-plugin-version>2.6</maven-resources-plugin-version>
+      <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
   </properties>
     <dependencies>
         <dependency>
@@ -163,6 +166,49 @@
     <build>
         <finalName>mobileScm-web</finalName>
         <plugins>
+            <plugin>
+                <!-- 作用：可以把资源文件用UTF-8的方式拷贝，拷贝的过程是可以做"变量替换"，
+                        也就是说你的配置文件可以是个模板，里面的"${}"包含的内容可以在拷贝过程中替换 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin-version}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <overwrite>true</overwrite>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- 插件作用：在maven项目中，使用compiler编译java源文件。 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin-version}</version>
+                <configuration>
+                    <source>1.7</source><!-- 源代码编译版本 -->
+                    <target>1.7</target><!-- 目标平台编译版本 -->
+                    <!-- 是否跳过测试 -->
+                    <skip>true</skip>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- 插件作用：在maven项目中，使用war来打包 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <resourceEncoding>utf-8</resourceEncoding>
+                    <warName>${project.artifactId}</warName>
+                    <outputDirectory>d:/${project.artifactId}/war</outputDirectory>
+                    <!-- 这个相当于打开的war目录，如果配置到项目的根路径，则会出现工程目录下的lib包会有jar文件，导致工程无法启动，会报jar冲突异常
+
+                    -->
+                    <webappDirectory>d:/${project.artifactId}/${project.artifactId}</webappDirectory>
+                    <!-- 工程的根路径 -->
+                    <warSourceDirectory>${project.basedir}/src/main/webapp</warSourceDirectory>
+                </configuration>
+            </plugin>
+
+
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
