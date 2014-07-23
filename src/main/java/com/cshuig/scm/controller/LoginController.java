@@ -25,6 +25,7 @@ public class LoginController {
             System.out.println(userName +"、"+password + " 登陆了");
             String s = "123123";
             System.out.println(s);
+            System.out.println("改java代码，立马生效");
             System.out.println(loginService.login());
         } catch (LoginException e) {
             e.printStackTrace();
