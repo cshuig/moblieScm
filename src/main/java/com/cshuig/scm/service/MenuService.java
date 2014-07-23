@@ -4,6 +4,7 @@ import com.cshuig.scm.entity.MenuEctity;
 import com.cshuig.scm.entity.RoleEntity;
 import com.cshuig.scm.exception.ServiceException;
 import com.cshuig.scm.service.Interface.IMenuService;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class MenuService implements IMenuService{
      * @throws com.cshuig.scm.exception.ServiceException
      */
     @Override
+    @Cacheable(value = "menuCache")
     public List<MenuEctity> getMenuList(String parentId, List<RoleEntity> roleList) throws ServiceException {
 
         return null;
