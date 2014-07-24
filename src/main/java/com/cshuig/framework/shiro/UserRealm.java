@@ -25,7 +25,7 @@ public class UserRealm extends AuthorizingRealm{
         //设置用户的角色
         authorizationInfo.setRoles(userSerice.getRolesByUsername(userName));
         //设置用户的权限
-        authorizationInfo.setStringPermissions();
+        //authorizationInfo.setStringPermissions();
         return null;
     }
 
