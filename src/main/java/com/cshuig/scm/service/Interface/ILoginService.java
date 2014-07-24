@@ -7,5 +7,5 @@ import javax.security.auth.login.LoginException;
  */
 public interface ILoginService {
 
-    public boolean login() throws LoginException;
+    public boolean login(String userName, String password) throws LoginException;
 }

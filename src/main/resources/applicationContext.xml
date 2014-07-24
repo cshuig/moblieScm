@@ -128,6 +128,26 @@
         <property name="cacheManager" ref="cacheManagerFactory"/>
     </bean>
 
+    <!-- 会话管理器使用用于 web 环境的 DefaultWebSessionManager -->
+    <bean id="sessionMananger" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="globalSessionTimeout" value="1800000"/>
+        <property name="deleteInvalidSessions" value="true" />
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <property name="sessionIdCookieEnabled" value="true"/>
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+    </bean>
+    <!-- 安全管理器使用用于 web 环境的 DefaultWebSecurityManager -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref=""/>
+        <property name="sessionManager" ref="sessionMananger"/>
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
 	<bean id="jdbcExceptionTranslator"
 		class="org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator">
 		<description>

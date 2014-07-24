@@ -1,6 +1,12 @@
 package com.cshuig.scm.controller;
 
 import com.cshuig.scm.service.Interface.ILoginService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +28,15 @@ public class LoginController {
     @RequestMapping(value = "/{flag}")
     public String login(@PathVariable String flag, String userName, String password, Model model){
         try {
-            System.out.println(userName +"、"+password + " 登陆了");
-            String s = "123123";
-            System.out.println(s);
-            System.out.println("改java代码，立马生效");
-            System.out.println(loginService.login());
+           loginService.login(userName, password);
         } catch (LoginException e) {
             e.printStackTrace();
+        }catch (UnknownAccountException e){
+            System.out.println("用户名错误");
+        }catch (IncorrectCredentialsException e){
+            System.out.println("密码错误");
+        }catch (AuthenticationException e){
+            System.out.println("其他错误");
         }
         return "welcome";
     }
