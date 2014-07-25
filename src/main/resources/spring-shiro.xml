@@ -37,7 +37,18 @@
     <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
         <constructor-arg value="sid"/>
         <property name="httpOnly" value="true"/>
-        <property name="maxAge" value="180000"/>
+        <property name="maxAge" value="180000"/><!-- maxAge=-1,表示浏览器关闭时立马失效此Cookie -->
+    </bean>
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="rememberMe"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="2592000"/> <!-- 30天 -->
+    </bean>
+
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cipherKey" value="
+            #{T(org.apache.shiro.codec.Base64).decode(('4AvVhmFLUs0KTA3Kprsdag==')}"/>
+        <property name="cookie" ref="rememberMeCookie"/>
     </bean>
 
     <!-- 会话DAO -->
@@ -67,6 +78,7 @@
         <property name="realm" ref="UserRealm"/>
         <property name="sessionManager" ref="sessionMananger"/>
         <property name="cacheManager" ref="cacheMananger"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>
     </bean>
 
     <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
@@ -93,6 +105,10 @@
             </util:map>
         </property>
         <property name="filterChainDefinitions">
+            <!--
+                /login.jsp = authc: 表示访问此地址的用户必须通过身份验证(Subject.isAuthenticated()==true);
+                /** = user：表示访问该地址的用户是身份验证通过或者RememberMe登陆的都可以
+             -->
             <value>
                 /index.jsp = anon
                 /unauthorized.jsp = anon
