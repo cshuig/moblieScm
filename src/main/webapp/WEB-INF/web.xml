@@ -63,7 +63,7 @@
     </filter-mapping>
     
     <!--  shiro权限配置 -->
-    <filter>
+    <!--<filter>
         <filter-name>shiroFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
         <init-param>
@@ -74,7 +74,7 @@
     <filter-mapping>
         <filter-name>shiroFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
     <listener>
         <listener-class>com.cshuig.framework.listener.SystemInitListener</listener-class>
     </listener>

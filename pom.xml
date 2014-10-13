@@ -25,6 +25,9 @@
       <ehcache-version>2.6.9</ehcache-version>
       <maven-resources-plugin-version>2.6</maven-resources-plugin-version>
       <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
+
+      <jsonpath.version>0.9.0</jsonpath.version>
+      <jackson2.version>2.2.3</jackson2.version>
   </properties>
     <dependencies>
         <dependency>
@@ -207,6 +210,26 @@
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-quartz</artifactId>
             <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-lgpl</artifactId>
+            <version>1.9.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-lgpl</artifactId>
+            <version>1.9.6</version>
         </dependency>
     </dependencies>
     <build>

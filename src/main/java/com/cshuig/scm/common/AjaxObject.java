@@ -12,6 +12,13 @@ public class AjaxObject implements Serializable{
     private String msg;
     private Object obj;
 
+    public AjaxObject() {
+    }
+
+    public AjaxObject(String msg) {
+        this.msg = msg;
+    }
+
     public boolean isType() {
         return type;
     }
